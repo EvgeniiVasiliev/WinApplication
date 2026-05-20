@@ -54,6 +54,11 @@ jlink {
         if (org.gradle.internal.os.OperatingSystem.current().windows) { // Можно настраивать в зависимости от платформы
             imageOptions += ['--icon', 'icon.ico'] // Иконка вашего исполняемого приложения
         }
+        if (org.gradle.internal.os.OperatingSystem.current().isMacOsX()) {
+            imageOptions += ['--icon', 'icon.icns']
+            imageOptions += ['--mac-package-identifier',  'com.example.winapplication']
+            imageOptions += ['--mac-package-name', 'WinApplication']
+        }
         imageOptions += ['--vendor', 'MyCompany' // Производитель
         ]
         installerOptions += [
