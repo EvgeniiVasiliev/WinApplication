@@ -1,0 +1,38 @@
+name: Build Windows Installer (Gradle + Java 17)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch: # Позволяет запускать вручную
+
+jobs:
+  build-windows:
+    runs-on: windows-latest  # Запуск на Windows
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Make gradlew executable (для совместимости)
+        run: chmod +x gradlew
+        shell: bash
+
+      - name: Build with Gradle
+        run: ./gradlew clean jpackage
+        shell: bash
+        # Примечание: задача называется 'jpackage', см. настройку в build.gradle ниже
+
+      - name: Upload installer artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows-Installer
+          # Gradle обычно кладет сборки в папку build, а не target
+          path: build/**/*.exe
