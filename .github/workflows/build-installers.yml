@@ -1,4 +1,4 @@
-name: Build Installers (Win + Mac Intel)
+name: Build Installers (Win + Mac Intel + Mac Selicon)
 
 on:
   push:
@@ -62,5 +62,35 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Mac-Installer-Intel
+          # Ищем .pkg или .dmg
+          path: build/jpackage/*
+
+  # --- ЗАДАЧА ДЛЯ MAC (Apple Silicon (arm64)) ---
+  build-mac-silicon:
+    runs-on: macos-26  # The standard macos-26 label runs on Apple Silicon (arm64).
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      - name: Build with Gradle (Mac)
+        run: ./gradlew clean jpackage
+
+      # --- ШАГ ОТЛАДКИ: Покажет, что реально создалось ---
+      - name: List build directory (Debug)
+        run: ls -R build
+
+      - name: Upload Mac artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Mac-Installer-Silicon
           # Ищем .pkg или .dmg
           path: build/jpackage/*

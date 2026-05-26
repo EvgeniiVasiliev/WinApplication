@@ -1,8 +1,8 @@
 plugins {
     id 'java'
     id 'application'
-    id 'org.openjfx.javafxplugin' version '0.0.10'
-    id 'org.beryx.jlink' version '2.24.1'  // плагин для создания исполняемых файлов
+    id 'org.openjfx.javafxplugin' version '0.0.13'
+    id 'org.beryx.jlink' version '3.1.1'  // плагин для создания исполняемых файлов
 }
 
 group 'com.example'
@@ -29,7 +29,7 @@ application {
 }
 
 javafx {
-    version = '17.0.1'
+    version = '17.0.15'
     modules = ['javafx.controls', 'javafx.fxml']
 }
 
